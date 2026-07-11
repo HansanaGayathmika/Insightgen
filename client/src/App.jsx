@@ -102,6 +102,57 @@ function App() {
                 </ResponsiveContainer>
               </div>
             ))}
+
+            <h2>Numeric Distributions</h2>
+          {Object.entries(result.eda.charts)
+            .filter(([_, chart]) => chart.type === "histogram")
+            .map(([colName, chart]) => (
+              <div key={colName} style={{ marginBottom: "2rem" }}>
+                <h3>{colName}</h3>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart
+                    data={chart.bins.slice(0, -1).map((bin, i) => ({
+                      name: `${bin} - ${chart.bins[i + 1]}`,
+                      count: chart.counts[i]
+                    }))}
+                  >
+                    <XAxis dataKey="name" angle={-20} textAnchor="end" height={60} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            ))}
+
+          <h2>Correlation Heatmap</h2>
+          {result.eda.correlations.strong_pairs.length === 0 ? (
+            <p>No strong correlations found.</p>
+          ) : (
+            <table border="1" cellPadding="6">
+              <thead>
+                <tr>
+                  <th>Column A</th>
+                  <th>Column B</th>
+                  <th>Correlation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.eda.correlations.strong_pairs.map((pair, i) => (
+                  <tr key={i}>
+                    <td>{pair.column_a}</td>
+                    <td>{pair.column_b}</td>
+                    <td style={{
+                      color: pair.correlation > 0 ? "green" : "red",
+                      fontWeight: "bold"
+                    }}>
+                      {pair.correlation}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       )}
     </div>

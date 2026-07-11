@@ -2,8 +2,10 @@ const express = require("express");
 const multer = require("multer");
 const axios = require("axios");
 const path = require("path");
+const cors = require("cors");
 
-const app = express();
+const app = express();      // ✅ create app FIRST
+app.use(cors());            // ✅ THEN use it
 
 // store files in uploads folder
 const upload = multer({ dest: "uploads/" });
