@@ -3,13 +3,21 @@ import axios from "axios";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer
 } from "recharts";
+import { useAuth } from "./AuthContext";
+import Auth from "./Auth";
 import "./App.css";
 
 function App() {
+  const { token, email, logout } = useAuth();
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // 🔒 Show login/register screen if not logged in
+  if (!token) {
+    return <Auth />;
+  }
 
   const handleUpload = async () => {
     if (!file) return;
@@ -21,11 +29,14 @@ function App() {
 
     try {
       const response = await axios.post("http://localhost:3000/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`
+        }
       });
       setResult(response.data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.error || err.message);
     } finally {
       setLoading(false);
     }
@@ -33,9 +44,15 @@ function App() {
 
   return (
     <div className="container">
-      <div className="header">
-        <span style={{ fontSize: "1.8rem" }}>📊</span>
-        <h1>InsightGen</h1>
+      <div className="header" style={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <span style={{ fontSize: "1.8rem" }}>📊</span>
+          <h1>InsightGen</h1>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <span style={{ color: "#666" }}>{email}</span>
+          <button onClick={logout}>Logout</button>
+        </div>
       </div>
 
       <div className="upload-bar">
