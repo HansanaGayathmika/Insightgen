@@ -61,24 +61,7 @@ app.post("/upload", requireAuth, (req, res, next) => {
       file_path: filePath
     });
 
-    // ✅ Save to history (now includes filePath)
-    const analysis = await Analysis.create({
-      user: req.userId,
-      filename: req.file.originalname,
-      filePath: filePath,          // ✅ NEW — needed for the story feature
-      result: response.data
-    });
-
-    // ✅ Include the saved analysis ID in the response
-    res.json({ ...response.data, analysisId: analysis._id });   // ✅ CHANGED
-
-  } catch (error) {
-    console.error("ERROR:", error.message);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-    // ✅ Save to history
+    // ✅ Save to history (includes filePath for story feature)
     const analysis = await Analysis.create({
       user: req.userId,
       filename: req.file.originalname,
@@ -86,7 +69,8 @@ app.post("/upload", requireAuth, (req, res, next) => {
       result: response.data
     });
 
-    res.json(response.data);
+    // ✅ Include the saved analysis ID in the response
+    res.json({ ...response.data, analysisId: analysis._id });
 
   } catch (error) {
     console.error("ERROR:", error.message);
@@ -125,6 +109,26 @@ app.post("/story/:id", requireAuth, async (req, res) => {
 
     const response = await axios.post("http://localhost:5000/story", {
       file_path: analysis.filePath
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 🔒 Chat about a past analysis
+app.post("/chat/:id", requireAuth, async (req, res) => {
+  try {
+    const { question, chat_history } = req.body;
+
+    const analysis = await Analysis.findOne({ _id: req.params.id, user: req.userId });
+    if (!analysis) return res.status(404).json({ error: "Not found" });
+
+    const response = await axios.post("http://localhost:5000/chat", {
+      file_path: analysis.filePath,
+      question: question,
+      chat_history: chat_history || []
     });
 
     res.json(response.data);

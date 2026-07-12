@@ -311,6 +311,75 @@ Return ONLY the narrative text, no headers, no markdown formatting, no JSON.
         return "Story generation unavailable right now."
 
 
+# 🔹 Step 9: "What Should I Do?" Chat Mode (Gemini)
+def answer_question(result, question, chat_history=None):
+    summary_for_ai = {
+        "rows": result["rows"],
+        "columns": result["columns"],
+        "column_details": result["column_details"],
+        "numerical_columns": result["eda"]["numerical_columns"],
+        "categorical_columns": result["eda"]["categorical_columns"],
+        "outliers": result["eda"]["outliers"],
+        "duplicate_rows": result["eda"].get("duplicate_rows", 0),
+        "strong_correlations": result["eda"]["correlations"]["strong_pairs"],
+        "rule_based_insights": result["eda"]["insights"],
+        "charts": result["eda"]["charts"],
+    }
+
+    history_text = ""
+    if chat_history:
+        for turn in chat_history[-5:]:  # keep last 5 turns for context
+            history_text += f"User: {turn['question']}\nAssistant: {turn['answer']}\n\n"
+
+    prompt = f"""You are a helpful data analyst assistant answering questions about a specific dataset.
+
+Dataset summary:
+{summary_for_ai}
+
+{f"Previous conversation:\n{history_text}" if history_text else ""}
+
+User's question: {question}
+
+Answer clearly and specifically, referencing actual columns, numbers, or patterns from the
+dataset summary above where relevant. If the question asks for advice (e.g. "how can I improve X"),
+give concrete, actionable recommendations — not generic advice.
+Keep your answer concise (2-4 sentences) unless the question needs more detail.
+Return ONLY the answer text, no JSON, no markdown headers.
+"""
+
+    try:
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print("Chat answer error:", str(e))
+        return "Sorry, I couldn't process that question right now."
+
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.json
+    file_path = data.get("file_path")
+    question = data.get("question")
+    chat_history = data.get("chat_history", [])
+
+    if not os.path.exists(file_path):
+        return {"error": f"File not found: {file_path}"}
+
+    if not question:
+        return {"error": "No question provided"}
+
+    try:
+        df = pd.read_csv(file_path)
+        result = analyze_dataset(file_path)
+        result["eda"] = auto_eda(df)
+
+        answer = answer_question(result, question, chat_history)
+        return {"answer": answer}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @app.route("/analyze", methods=["POST"])
 def analyze():
     data = request.json

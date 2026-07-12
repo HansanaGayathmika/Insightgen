@@ -6,6 +6,7 @@ import {
 import { useAuth } from "./AuthContext";
 import Auth from "./Auth";
 import History from "./History";
+import Chat from "./Chat";
 import "./App.css";
 
 function App() {
@@ -15,11 +16,32 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [view, setView] = useState("upload"); // "upload" or "history"
+  const [story, setStory] = useState(null);
+  const [storyLoading, setStoryLoading] = useState(false);
 
   // 🔒 Show login/register screen if not logged in
   if (!token) {
     return <Auth />;
   }
+
+  const handleGenerateStory = async () => {
+  if (!result?.analysisId) return;
+  setStoryLoading(true);
+  setStory(null);
+
+  try {
+    const res = await axios.post(
+      `http://localhost:3000/story/${result.analysisId}`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setStory(res.data.story);
+  } catch (err) {
+    setStory("Failed to generate story.");
+  } finally {
+    setStoryLoading(false);
+  }
+};
 
   const handleUpload = async () => {
     if (!file) return;
@@ -106,6 +128,18 @@ function App() {
                   </div>
                 </div>
               </div>
+
+              <div className="card">
+                <h2>📖 Dataset Story</h2>
+                <button onClick={handleGenerateStory} disabled={storyLoading}>
+                  {storyLoading ? "Writing story..." : "Explain my dataset"}
+                </button>
+                {story && (
+                  <p style={{ marginTop: "1rem", lineHeight: "1.6" }}>{story}</p>
+                )}
+              </div>
+
+              {result.analysisId && <Chat analysisId={result.analysisId} />}
 
               <div className="card">
                 <h2>Insights</h2>
