@@ -222,6 +222,58 @@ Return ONLY a JSON array of strings, nothing else. Example format:
         print("AI insights error:", str(e))
         return ["AI insights unavailable right now."]
 
+    # 🔹 Step 7: Actionable suggestions (Gemini)
+
+
+def generate_suggestions(result):
+    summary_for_ai = {
+        "rows": result["rows"],
+        "columns": result["columns"],
+        "column_details": result["column_details"],
+        "numerical_columns": result["eda"]["numerical_columns"],
+        "categorical_columns": result["eda"]["categorical_columns"],
+        "outliers": result["eda"]["outliers"],
+        "duplicate_rows": result["eda"].get("duplicate_rows", 0),
+        "suspicious_dtypes": result["eda"].get("suspicious_dtypes", []),
+        "strong_correlations": result["eda"]["correlations"]["strong_pairs"],
+        "rule_based_insights": result["eda"]["insights"]
+    }
+
+    prompt = f"""You are a senior data analyst advising a colleague. Here is a summary of a dataset:
+
+{summary_for_ai}
+
+Give 3-5 specific, actionable recommendations for cleaning or improving this dataset before analysis or modeling.
+Each suggestion must be a concrete action, not an observation.
+
+Good examples:
+- "Fill missing values in 'price' using the median, since the distribution is skewed."
+- "Drop the 'id' column before modeling — it has no predictive value."
+- "Remove the 120 duplicate rows before running further analysis."
+- "Convert 'zip_code' to text type — it's currently stored as a number."
+
+Bad examples (do NOT do this, these are just observations, not actions):
+- "The 'price' column has missing values."
+- "There are duplicate rows in the dataset."
+
+Return ONLY a JSON array of strings, nothing else.
+"""
+
+    try:
+        response = gemini_model.generate_content(prompt)
+        response_text = response.text.strip()
+
+        if response_text.startswith("```"):
+            response_text = response_text.strip(
+                "`").replace("json", "", 1).strip()
+
+        suggestions = json.loads(response_text)
+        return suggestions
+
+    except Exception as e:
+        print("Suggestions error:", str(e))
+        return ["Suggestions unavailable right now."]
+
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -237,6 +289,7 @@ def analyze():
         result = analyze_dataset(file_path)
         result["eda"] = auto_eda(df)
         result["ai_insights"] = generate_ai_insights(result)
+        result["suggestions"] = generate_suggestions(result)
 
         return result
 
