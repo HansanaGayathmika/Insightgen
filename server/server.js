@@ -61,10 +61,28 @@ app.post("/upload", requireAuth, (req, res, next) => {
       file_path: filePath
     });
 
+    // ✅ Save to history (now includes filePath)
+    const analysis = await Analysis.create({
+      user: req.userId,
+      filename: req.file.originalname,
+      filePath: filePath,          // ✅ NEW — needed for the story feature
+      result: response.data
+    });
+
+    // ✅ Include the saved analysis ID in the response
+    res.json({ ...response.data, analysisId: analysis._id });   // ✅ CHANGED
+
+  } catch (error) {
+    console.error("ERROR:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
     // ✅ Save to history
     const analysis = await Analysis.create({
       user: req.userId,
       filename: req.file.originalname,
+      filePath: filePath,
       result: response.data
     });
 
@@ -94,6 +112,22 @@ app.get("/history/:id", requireAuth, async (req, res) => {
     const analysis = await Analysis.findOne({ _id: req.params.id, user: req.userId });
     if (!analysis) return res.status(404).json({ error: "Not found" });
     res.json(analysis.result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 🔒 Generate story for a past analysis
+app.post("/story/:id", requireAuth, async (req, res) => {
+  try {
+    const analysis = await Analysis.findOne({ _id: req.params.id, user: req.userId });
+    if (!analysis) return res.status(404).json({ error: "Not found" });
+
+    const response = await axios.post("http://localhost:5000/story", {
+      file_path: analysis.filePath
+    });
+
+    res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

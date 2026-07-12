@@ -274,6 +274,42 @@ Return ONLY a JSON array of strings, nothing else.
         print("Suggestions error:", str(e))
         return ["Suggestions unavailable right now."]
 
+    # 🔹 Step 8: Auto Story Generator (Gemini)
+
+
+def generate_story(result):
+    summary_for_ai = {
+        "rows": result["rows"],
+        "columns": result["columns"],
+        "column_details": result["column_details"],
+        "numerical_columns": result["eda"]["numerical_columns"],
+        "categorical_columns": result["eda"]["categorical_columns"],
+        "charts": result["eda"]["charts"],
+        "outliers": result["eda"]["outliers"],
+        "duplicate_rows": result["eda"].get("duplicate_rows", 0),
+        "strong_correlations": result["eda"]["correlations"]["strong_pairs"],
+    }
+
+    prompt = f"""You are a data storyteller. Here is a summary of a dataset:
+
+{summary_for_ai}
+
+Write a short, engaging 2-3 paragraph narrative explaining what this dataset is about,
+its key characteristics, and anything notable — as if explaining it to a curious
+non-technical person. Use plain English, flowing prose (not bullet points).
+Mention concrete numbers where relevant (row counts, top categories, notable patterns).
+
+Return ONLY the narrative text, no headers, no markdown formatting, no JSON.
+"""
+
+    try:
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+
+    except Exception as e:
+        print("Story generation error:", str(e))
+        return "Story generation unavailable right now."
+
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -292,6 +328,26 @@ def analyze():
         result["suggestions"] = generate_suggestions(result)
 
         return result
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@app.route("/story", methods=["POST"])
+def story():
+    data = request.json
+    file_path = data.get("file_path")
+
+    if not os.path.exists(file_path):
+        return {"error": f"File not found: {file_path}"}
+
+    try:
+        df = pd.read_csv(file_path)
+        result = analyze_dataset(file_path)
+        result["eda"] = auto_eda(df)
+
+        narrative = generate_story(result)
+        return {"story": narrative}
 
     except Exception as e:
         return {"error": str(e)}

@@ -129,6 +129,19 @@ function App() {
                 </div>
               )}
 
+              {result.suggestions && (
+                <div className="card">
+                  <h2>🛠 Recommended Actions</h2>
+                  <ul className="insights-list">
+                    {result.suggestions.map((suggestion, i) => (
+                      <li key={i} style={{ background: "#e8f9ee", borderLeft: "4px solid #22c55e" }}>
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <div className="card">
                 <h2>Column Details</h2>
                 <table>
