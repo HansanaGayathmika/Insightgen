@@ -4,14 +4,10 @@ const axios = require("axios");
 const path = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
-
 const dns = require("dns");
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
-
 require("dotenv").config();
-
-
 
 const authRoutes = require("./routes/auth");
 const requireAuth = require("./middleware/auth");
@@ -29,16 +25,37 @@ mongoose.connect(process.env.MONGO_URI)
 // Auth routes (register/login)
 app.use("/auth", authRoutes);
 
-const upload = multer({ dest: "uploads/" });
+// ✅ Multer config with file validation
+const upload = multer({
+  dest: "uploads/",
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
+  fileFilter: (req, file, cb) => {
+    const isCSV =
+      file.mimetype === "text/csv" ||
+      file.originalname.toLowerCase().endsWith(".csv");
+    if (!isCSV) {
+      return cb(new Error("Only CSV files are allowed"));
+    }
+    cb(null, true);
+  }
+});
 
-// 🔒 Protected upload route
-app.post("/upload", requireAuth, upload.single("file"), async (req, res) => {
+// 🔒 Protected upload route (with clean multer error handling)
+app.post("/upload", requireAuth, (req, res, next) => {
+  upload.single("file")(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    next();
+  });
+}, async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
     const filePath = path.resolve(req.file.path);
+    console.log("File saved at:", filePath);
 
     const response = await axios.post("http://localhost:5000/analyze", {
       file_path: filePath
@@ -59,7 +76,7 @@ app.post("/upload", requireAuth, upload.single("file"), async (req, res) => {
   }
 });
 
-// 🔒 Get history
+// 🔒 Get history (list)
 app.get("/history", requireAuth, async (req, res) => {
   try {
     const history = await Analysis.find({ user: req.userId })
@@ -77,6 +94,20 @@ app.get("/history/:id", requireAuth, async (req, res) => {
     const analysis = await Analysis.findOne({ _id: req.params.id, user: req.userId });
     if (!analysis) return res.status(404).json({ error: "Not found" });
     res.json(analysis.result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 🔒 Delete a history entry
+app.delete("/history/:id", requireAuth, async (req, res) => {
+  try {
+    const deleted = await Analysis.findOneAndDelete({
+      _id: req.params.id,
+      user: req.userId
+    });
+    if (!deleted) return res.status(404).json({ error: "Not found" });
+    res.json({ message: "Deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

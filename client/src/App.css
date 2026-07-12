@@ -143,3 +143,26 @@ ul.insights-list li {
   .chart-grid { grid-template-columns: 1fr; }
   .stats-row { flex-direction: column; }
 }
+
+/* ✅ Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-card {
+  height: 120px;
+  margin-bottom: 1.5rem;
+}
+
+.skeleton-line {
+  height: 16px;
+  margin-bottom: 0.6rem;
+}

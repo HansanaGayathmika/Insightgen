@@ -1,0 +1,278 @@
+season,grand_prix,circuit,country_iso3,region,hosting_fee_usd_m_est,weekend_attendance_k,debut_year,is_street_circuit,is_new_circuit_post_2020
+2010,Bahrain,Sakhir,BHR,Middle East,38.5,97,2004,0,0
+2012,Bahrain,Sakhir,BHR,Middle East,35.8,100,2004,0,0
+2013,Bahrain,Sakhir,BHR,Middle East,34.6,94,2004,0,0
+2014,Bahrain,Sakhir,BHR,Middle East,35.1,96,2004,0,0
+2015,Bahrain,Sakhir,BHR,Middle East,34.2,94,2004,0,0
+2016,Bahrain,Sakhir,BHR,Middle East,34.3,92,2004,0,0
+2017,Bahrain,Sakhir,BHR,Middle East,35.0,97,2004,0,0
+2018,Bahrain,Sakhir,BHR,Middle East,33.2,93,2004,0,0
+2019,Bahrain,Sakhir,BHR,Middle East,34.3,94,2004,0,0
+2020,Bahrain,Sakhir,BHR,Middle East,31.4,4,2004,0,0
+2021,Bahrain,Sakhir,BHR,Middle East,34.7,44,2004,0,0
+2022,Bahrain,Sakhir,BHR,Middle East,32.2,86,2004,0,0
+2023,Bahrain,Sakhir,BHR,Middle East,30.6,103,2004,0,0
+2024,Bahrain,Sakhir,BHR,Middle East,30.5,96,2004,0,0
+2025,Bahrain,Sakhir,BHR,Middle East,28.1,96,2004,0,0
+2026,Bahrain,Sakhir,BHR,Middle East,28.1,92,2004,0,0
+2021,Saudi Arabia,Jeddah,SAU,Middle East,42.4,31,2021,1,1
+2022,Saudi Arabia,Jeddah,SAU,Middle East,40.4,59,2021,1,1
+2023,Saudi Arabia,Jeddah,SAU,Middle East,38.3,89,2021,1,1
+2024,Saudi Arabia,Jeddah,SAU,Middle East,42.1,89,2021,1,1
+2025,Saudi Arabia,Jeddah,SAU,Middle East,42.4,88,2021,1,1
+2026,Saudi Arabia,Jeddah,SAU,Middle East,40.2,89,2021,1,1
+2010,Australia,Albert Park,AUS,Oceania,34.8,440,1996,0,0
+2011,Australia,Albert Park,AUS,Oceania,39.0,441,1996,0,0
+2012,Australia,Albert Park,AUS,Oceania,32.0,461,1996,0,0
+2013,Australia,Albert Park,AUS,Oceania,33.1,420,1996,0,0
+2014,Australia,Albert Park,AUS,Oceania,34.0,449,1996,0,0
+2015,Australia,Albert Park,AUS,Oceania,29.1,478,1996,0,0
+2016,Australia,Albert Park,AUS,Oceania,31.6,423,1996,0,0
+2017,Australia,Albert Park,AUS,Oceania,33.1,466,1996,0,0
+2018,Australia,Albert Park,AUS,Oceania,29.1,487,1996,0,0
+2019,Australia,Albert Park,AUS,Oceania,28.8,451,1996,0,0
+2022,Australia,Albert Park,AUS,Oceania,25.9,465,1996,0,0
+2023,Australia,Albert Park,AUS,Oceania,27.2,452,1996,0,0
+2024,Australia,Albert Park,AUS,Oceania,24.7,454,1996,0,0
+2025,Australia,Albert Park,AUS,Oceania,25.3,421,1996,0,0
+2026,Australia,Albert Park,AUS,Oceania,22.9,464,1996,0,0
+2010,Japan,Suzuka,JPN,Asia,21.4,222,1976,0,0
+2011,Japan,Suzuka,JPN,Asia,23.7,234,1976,0,0
+2012,Japan,Suzuka,JPN,Asia,23.1,227,1976,0,0
+2013,Japan,Suzuka,JPN,Asia,22.7,221,1976,0,0
+2014,Japan,Suzuka,JPN,Asia,23.8,214,1976,0,0
+2015,Japan,Suzuka,JPN,Asia,23.6,209,1976,0,0
+2016,Japan,Suzuka,JPN,Asia,22.1,230,1976,0,0
+2017,Japan,Suzuka,JPN,Asia,22.1,241,1976,0,0
+2018,Japan,Suzuka,JPN,Asia,19.9,204,1976,0,0
+2019,Japan,Suzuka,JPN,Asia,19.2,227,1976,0,0
+2022,Japan,Suzuka,JPN,Asia,19.8,221,1976,0,0
+2023,Japan,Suzuka,JPN,Asia,17.6,228,1976,0,0
+2024,Japan,Suzuka,JPN,Asia,17.2,232,1976,0,0
+2025,Japan,Suzuka,JPN,Asia,21.6,224,1976,0,0
+2026,Japan,Suzuka,JPN,Asia,18.5,214,1976,0,0
+2010,China,Shanghai,CHN,Asia,44.9,169,2004,0,0
+2011,China,Shanghai,CHN,Asia,45.7,162,2004,0,0
+2012,China,Shanghai,CHN,Asia,52.8,177,2004,0,0
+2013,China,Shanghai,CHN,Asia,47.6,172,2004,0,0
+2014,China,Shanghai,CHN,Asia,45.0,183,2004,0,0
+2015,China,Shanghai,CHN,Asia,44.4,179,2004,0,0
+2016,China,Shanghai,CHN,Asia,43.0,172,2004,0,0
+2017,China,Shanghai,CHN,Asia,39.1,157,2004,0,0
+2018,China,Shanghai,CHN,Asia,41.0,175,2004,0,0
+2019,China,Shanghai,CHN,Asia,37.8,174,2004,0,0
+2024,China,Shanghai,CHN,Asia,37.2,156,2004,0,0
+2025,China,Shanghai,CHN,Asia,34.4,178,2004,0,0
+2026,China,Shanghai,CHN,Asia,36.6,164,2004,0,0
+2022,Miami,Miami Intl,USA,North America,46.6,198,2022,1,1
+2023,Miami,Miami Intl,USA,North America,47.4,188,2022,1,1
+2024,Miami,Miami Intl,USA,North America,43.2,261,2022,1,1
+2025,Miami,Miami Intl,USA,North America,44.9,272,2022,1,1
+2026,Miami,Miami Intl,USA,North America,44.5,271,2022,1,1
+2020,Emilia-Romagna,Imola,ITA,Europe,16.8,12,1980,0,0
+2021,Emilia-Romagna,Imola,ITA,Europe,16.4,130,1980,0,0
+2022,Emilia-Romagna,Imola,ITA,Europe,14.7,227,1980,0,0
+2024,Emilia-Romagna,Imola,ITA,Europe,16.3,253,1980,0,0
+2025,Emilia-Romagna,Imola,ITA,Europe,13.1,241,1980,0,0
+2026,Emilia-Romagna,Imola,ITA,Europe,15.0,246,1980,0,0
+2010,Monaco,Monte Carlo,MCO,Europe,14.5,214,1950,1,0
+2011,Monaco,Monte Carlo,MCO,Europe,13.7,192,1950,1,0
+2012,Monaco,Monte Carlo,MCO,Europe,14.5,203,1950,1,0
+2013,Monaco,Monte Carlo,MCO,Europe,14.4,209,1950,1,0
+2014,Monaco,Monte Carlo,MCO,Europe,13.8,204,1950,1,0
+2015,Monaco,Monte Carlo,MCO,Europe,13.1,200,1950,1,0
+2016,Monaco,Monte Carlo,MCO,Europe,13.1,202,1950,1,0
+2017,Monaco,Monte Carlo,MCO,Europe,13.4,205,1950,1,0
+2018,Monaco,Monte Carlo,MCO,Europe,12.5,191,1950,1,0
+2019,Monaco,Monte Carlo,MCO,Europe,12.3,199,1950,1,0
+2021,Monaco,Monte Carlo,MCO,Europe,11.9,111,1950,1,0
+2022,Monaco,Monte Carlo,MCO,Europe,11.2,204,1950,1,0
+2023,Monaco,Monte Carlo,MCO,Europe,12.1,200,1950,1,0
+2024,Monaco,Monte Carlo,MCO,Europe,12.8,196,1950,1,0
+2025,Monaco,Monte Carlo,MCO,Europe,11.1,192,1950,1,0
+2026,Monaco,Monte Carlo,MCO,Europe,10.5,202,1950,1,0
+2010,Canada,Montreal,CAN,North America,26.3,350,1967,0,0
+2011,Canada,Montreal,CAN,North America,26.3,343,1967,0,0
+2012,Canada,Montreal,CAN,North America,23.3,391,1967,0,0
+2013,Canada,Montreal,CAN,North America,23.8,332,1967,0,0
+2014,Canada,Montreal,CAN,North America,21.8,328,1967,0,0
+2015,Canada,Montreal,CAN,North America,23.5,338,1967,0,0
+2016,Canada,Montreal,CAN,North America,21.9,343,1967,0,0
+2017,Canada,Montreal,CAN,North America,22.2,330,1967,0,0
+2018,Canada,Montreal,CAN,North America,19.5,348,1967,0,0
+2019,Canada,Montreal,CAN,North America,21.2,350,1967,0,0
+2022,Canada,Montreal,CAN,North America,18.3,356,1967,0,0
+2023,Canada,Montreal,CAN,North America,18.0,336,1967,0,0
+2024,Canada,Montreal,CAN,North America,17.5,367,1967,0,0
+2025,Canada,Montreal,CAN,North America,18.9,355,1967,0,0
+2010,Spain,Barcelona,ESP,Europe,26.9,296,1991,0,0
+2011,Spain,Barcelona,ESP,Europe,22.0,250,1991,0,0
+2012,Spain,Barcelona,ESP,Europe,22.9,248,1991,0,0
+2013,Spain,Barcelona,ESP,Europe,21.8,256,1991,0,0
+2014,Spain,Barcelona,ESP,Europe,21.1,264,1991,0,0
+2015,Spain,Barcelona,ESP,Europe,22.3,266,1991,0,0
+2016,Spain,Barcelona,ESP,Europe,22.4,267,1991,0,0
+2017,Spain,Barcelona,ESP,Europe,20.8,287,1991,0,0
+2018,Spain,Barcelona,ESP,Europe,21.1,235,1991,0,0
+2019,Spain,Barcelona,ESP,Europe,19.2,237,1991,0,0
+2020,Spain,Barcelona,ESP,Europe,20.0,12,1991,0,0
+2021,Spain,Barcelona,ESP,Europe,19.1,143,1991,0,0
+2022,Spain,Barcelona,ESP,Europe,19.9,269,1991,0,0
+2023,Spain,Barcelona,ESP,Europe,17.8,247,1991,0,0
+2024,Spain,Barcelona,ESP,Europe,18.6,262,1991,0,0
+2025,Spain,Barcelona,ESP,Europe,16.3,257,1991,0,0
+2014,Austria,Red Bull Ring,AUT,Europe,22.7,301,1970,0,0
+2015,Austria,Red Bull Ring,AUT,Europe,21.2,296,1970,0,0
+2016,Austria,Red Bull Ring,AUT,Europe,21.5,306,1970,0,0
+2017,Austria,Red Bull Ring,AUT,Europe,22.1,321,1970,0,0
+2018,Austria,Red Bull Ring,AUT,Europe,20.5,298,1970,0,0
+2019,Austria,Red Bull Ring,AUT,Europe,21.0,314,1970,0,0
+2020,Austria,Red Bull Ring,AUT,Europe,19.5,15,1970,0,0
+2021,Austria,Red Bull Ring,AUT,Europe,20.8,162,1970,0,0
+2022,Austria,Red Bull Ring,AUT,Europe,21.4,291,1970,0,0
+2023,Austria,Red Bull Ring,AUT,Europe,18.9,305,1970,0,0
+2024,Austria,Red Bull Ring,AUT,Europe,18.4,295,1970,0,0
+2025,Austria,Red Bull Ring,AUT,Europe,16.6,306,1970,0,0
+2010,Britain,Silverstone,GBR,Europe,23.9,482,1950,0,0
+2011,Britain,Silverstone,GBR,Europe,23.3,453,1950,0,0
+2012,Britain,Silverstone,GBR,Europe,24.1,483,1950,0,0
+2013,Britain,Silverstone,GBR,Europe,24.1,532,1950,0,0
+2014,Britain,Silverstone,GBR,Europe,23.1,491,1950,0,0
+2015,Britain,Silverstone,GBR,Europe,20.8,449,1950,0,0
+2016,Britain,Silverstone,GBR,Europe,23.9,457,1950,0,0
+2017,Britain,Silverstone,GBR,Europe,20.0,479,1950,0,0
+2018,Britain,Silverstone,GBR,Europe,20.7,458,1950,0,0
+2019,Britain,Silverstone,GBR,Europe,20.0,509,1950,0,0
+2020,Britain,Silverstone,GBR,Europe,19.1,22,1950,0,0
+2021,Britain,Silverstone,GBR,Europe,20.7,245,1950,0,0
+2022,Britain,Silverstone,GBR,Europe,18.5,442,1950,0,0
+2023,Britain,Silverstone,GBR,Europe,18.0,478,1950,0,0
+2024,Britain,Silverstone,GBR,Europe,19.9,455,1950,0,0
+2025,Britain,Silverstone,GBR,Europe,18.1,496,1950,0,0
+2010,Hungary,Budapest,HUN,Europe,26.0,294,1986,0,0
+2011,Hungary,Budapest,HUN,Europe,27.3,284,1986,0,0
+2012,Hungary,Budapest,HUN,Europe,29.0,295,1986,0,0
+2013,Hungary,Budapest,HUN,Europe,28.8,246,1986,0,0
+2014,Hungary,Budapest,HUN,Europe,26.0,281,1986,0,0
+2015,Hungary,Budapest,HUN,Europe,26.4,286,1986,0,0
+2016,Hungary,Budapest,HUN,Europe,27.4,288,1986,0,0
+2017,Hungary,Budapest,HUN,Europe,25.2,254,1986,0,0
+2018,Hungary,Budapest,HUN,Europe,24.3,285,1986,0,0
+2019,Hungary,Budapest,HUN,Europe,22.9,288,1986,0,0
+2020,Hungary,Budapest,HUN,Europe,25.3,14,1986,0,0
+2021,Hungary,Budapest,HUN,Europe,19.6,131,1986,0,0
+2022,Hungary,Budapest,HUN,Europe,25.8,272,1986,0,0
+2023,Hungary,Budapest,HUN,Europe,20.1,297,1986,0,0
+2024,Hungary,Budapest,HUN,Europe,22.2,295,1986,0,0
+2025,Hungary,Budapest,HUN,Europe,22.2,286,1986,0,0
+2010,Belgium,Spa-Francorchamps,BEL,Europe,25.6,393,1950,0,0
+2011,Belgium,Spa-Francorchamps,BEL,Europe,28.0,398,1950,0,0
+2012,Belgium,Spa-Francorchamps,BEL,Europe,21.7,388,1950,0,0
+2013,Belgium,Spa-Francorchamps,BEL,Europe,24.9,402,1950,0,0
+2014,Belgium,Spa-Francorchamps,BEL,Europe,22.2,402,1950,0,0
+2015,Belgium,Spa-Francorchamps,BEL,Europe,23.5,428,1950,0,0
+2016,Belgium,Spa-Francorchamps,BEL,Europe,20.8,370,1950,0,0
+2017,Belgium,Spa-Francorchamps,BEL,Europe,20.9,370,1950,0,0
+2018,Belgium,Spa-Francorchamps,BEL,Europe,19.7,327,1950,0,0
+2019,Belgium,Spa-Francorchamps,BEL,Europe,19.9,387,1950,0,0
+2020,Belgium,Spa-Francorchamps,BEL,Europe,19.4,20,1950,0,0
+2021,Belgium,Spa-Francorchamps,BEL,Europe,19.6,202,1950,0,0
+2022,Belgium,Spa-Francorchamps,BEL,Europe,19.5,395,1950,0,0
+2023,Belgium,Spa-Francorchamps,BEL,Europe,19.2,406,1950,0,0
+2024,Belgium,Spa-Francorchamps,BEL,Europe,18.6,389,1950,0,0
+2025,Belgium,Spa-Francorchamps,BEL,Europe,18.6,374,1950,0,0
+2021,Netherlands,Zandvoort,NLD,Europe,24.1,169,1952,0,0
+2022,Netherlands,Zandvoort,NLD,Europe,22.7,311,1952,0,0
+2023,Netherlands,Zandvoort,NLD,Europe,24.4,322,1952,0,0
+2024,Netherlands,Zandvoort,NLD,Europe,22.2,268,1952,0,0
+2025,Netherlands,Zandvoort,NLD,Europe,22.5,271,1952,0,0
+2010,Italy,Monza,ITA,Europe,16.4,337,1950,0,0
+2011,Italy,Monza,ITA,Europe,15.5,319,1950,0,0
+2012,Italy,Monza,ITA,Europe,13.0,339,1950,0,0
+2013,Italy,Monza,ITA,Europe,13.9,326,1950,0,0
+2014,Italy,Monza,ITA,Europe,13.7,381,1950,0,0
+2015,Italy,Monza,ITA,Europe,14.0,352,1950,0,0
+2016,Italy,Monza,ITA,Europe,13.7,359,1950,0,0
+2017,Italy,Monza,ITA,Europe,12.6,300,1950,0,0
+2018,Italy,Monza,ITA,Europe,12.4,348,1950,0,0
+2019,Italy,Monza,ITA,Europe,11.6,332,1950,0,0
+2020,Italy,Monza,ITA,Europe,11.5,18,1950,0,0
+2021,Italy,Monza,ITA,Europe,12.3,172,1950,0,0
+2022,Italy,Monza,ITA,Europe,12.0,334,1950,0,0
+2023,Italy,Monza,ITA,Europe,11.5,315,1950,0,0
+2024,Italy,Monza,ITA,Europe,9.7,337,1950,0,0
+2025,Italy,Monza,ITA,Europe,11.1,355,1950,0,0
+2016,Azerbaijan,Baku,AZE,Europe,47.8,124,2016,1,0
+2017,Azerbaijan,Baku,AZE,Europe,40.1,113,2016,1,0
+2018,Azerbaijan,Baku,AZE,Europe,42.9,185,2016,1,0
+2019,Azerbaijan,Baku,AZE,Europe,44.6,174,2016,1,0
+2021,Azerbaijan,Baku,AZE,Europe,38.3,78,2016,1,0
+2022,Azerbaijan,Baku,AZE,Europe,40.3,155,2016,1,0
+2023,Azerbaijan,Baku,AZE,Europe,37.2,164,2016,1,0
+2024,Azerbaijan,Baku,AZE,Europe,40.8,162,2016,1,0
+2025,Azerbaijan,Baku,AZE,Europe,31.4,169,2016,1,0
+2010,Singapore,Marina Bay,SGP,Asia,33.6,280,2008,1,0
+2011,Singapore,Marina Bay,SGP,Asia,34.0,276,2008,1,0
+2012,Singapore,Marina Bay,SGP,Asia,35.0,258,2008,1,0
+2013,Singapore,Marina Bay,SGP,Asia,31.6,289,2008,1,0
+2014,Singapore,Marina Bay,SGP,Asia,30.7,257,2008,1,0
+2015,Singapore,Marina Bay,SGP,Asia,32.4,295,2008,1,0
+2016,Singapore,Marina Bay,SGP,Asia,30.4,252,2008,1,0
+2017,Singapore,Marina Bay,SGP,Asia,31.1,256,2008,1,0
+2018,Singapore,Marina Bay,SGP,Asia,29.7,267,2008,1,0
+2019,Singapore,Marina Bay,SGP,Asia,26.7,273,2008,1,0
+2022,Singapore,Marina Bay,SGP,Asia,26.6,270,2008,1,0
+2023,Singapore,Marina Bay,SGP,Asia,27.4,273,2008,1,0
+2024,Singapore,Marina Bay,SGP,Asia,27.5,283,2008,1,0
+2025,Singapore,Marina Bay,SGP,Asia,24.4,267,2008,1,0
+2012,United States,Austin (COTA),USA,North America,30.2,306,2012,0,0
+2013,United States,Austin (COTA),USA,North America,31.9,266,2012,0,0
+2014,United States,Austin (COTA),USA,North America,30.8,412,2012,0,0
+2015,United States,Austin (COTA),USA,North America,34.2,395,2012,0,0
+2016,United States,Austin (COTA),USA,North America,27.9,455,2012,0,0
+2017,United States,Austin (COTA),USA,North America,32.3,415,2012,0,0
+2018,United States,Austin (COTA),USA,North America,28.1,445,2012,0,0
+2019,United States,Austin (COTA),USA,North America,24.8,391,2012,0,0
+2021,United States,Austin (COTA),USA,North America,27.0,232,2012,0,0
+2022,United States,Austin (COTA),USA,North America,26.2,434,2012,0,0
+2023,United States,Austin (COTA),USA,North America,28.3,477,2012,0,0
+2024,United States,Austin (COTA),USA,North America,25.0,431,2012,0,0
+2025,United States,Austin (COTA),USA,North America,28.4,399,2012,0,0
+2015,Mexico,Mexico City,MEX,North America,23.6,265,2015,0,0
+2016,Mexico,Mexico City,MEX,North America,21.9,276,2015,0,0
+2017,Mexico,Mexico City,MEX,North America,20.1,380,2015,0,0
+2018,Mexico,Mexico City,MEX,North America,21.2,419,2015,0,0
+2019,Mexico,Mexico City,MEX,North America,20.2,401,2015,0,0
+2021,Mexico,Mexico City,MEX,North America,20.3,190,2015,0,0
+2022,Mexico,Mexico City,MEX,North America,20.1,416,2015,0,0
+2023,Mexico,Mexico City,MEX,North America,22.1,392,2015,0,0
+2024,Mexico,Mexico City,MEX,North America,18.0,415,2015,0,0
+2025,Mexico,Mexico City,MEX,North America,19.1,389,2015,0,0
+2021,Sao Paulo,Interlagos,BRA,South America,15.3,120,1973,0,0
+2022,Sao Paulo,Interlagos,BRA,South America,14.6,230,1973,0,0
+2023,Sao Paulo,Interlagos,BRA,South America,15.2,246,1973,0,0
+2024,Sao Paulo,Interlagos,BRA,South America,14.3,213,1973,0,0
+2025,Sao Paulo,Interlagos,BRA,South America,13.0,220,1973,0,0
+2023,Las Vegas,Vegas Strip,USA,North America,34.9,222,2023,1,1
+2024,Las Vegas,Vegas Strip,USA,North America,34.5,216,2023,1,1
+2025,Las Vegas,Vegas Strip,USA,North America,34.7,312,2023,1,1
+2021,Qatar,Lusail,QAT,Middle East,42.5,36,2021,0,1
+2023,Qatar,Lusail,QAT,Middle East,37.8,97,2021,0,1
+2024,Qatar,Lusail,QAT,Middle East,36.1,101,2021,0,1
+2025,Qatar,Lusail,QAT,Middle East,37.7,95,2021,0,1
+2010,Abu Dhabi,Yas Marina,ARE,Middle East,45.1,91,2009,0,0
+2011,Abu Dhabi,Yas Marina,ARE,Middle East,44.5,150,2009,0,0
+2012,Abu Dhabi,Yas Marina,ARE,Middle East,42.1,158,2009,0,0
+2013,Abu Dhabi,Yas Marina,ARE,Middle East,39.7,146,2009,0,0
+2014,Abu Dhabi,Yas Marina,ARE,Middle East,40.8,144,2009,0,0
+2015,Abu Dhabi,Yas Marina,ARE,Middle East,39.7,145,2009,0,0
+2016,Abu Dhabi,Yas Marina,ARE,Middle East,41.2,154,2009,0,0
+2017,Abu Dhabi,Yas Marina,ARE,Middle East,38.3,150,2009,0,0
+2018,Abu Dhabi,Yas Marina,ARE,Middle East,36.0,150,2009,0,0
+2019,Abu Dhabi,Yas Marina,ARE,Middle East,35.1,152,2009,0,0
+2020,Abu Dhabi,Yas Marina,ARE,Middle East,41.1,7,2009,0,0
+2021,Abu Dhabi,Yas Marina,ARE,Middle East,30.9,70,2009,0,0
+2022,Abu Dhabi,Yas Marina,ARE,Middle East,37.3,149,2009,0,0
+2023,Abu Dhabi,Yas Marina,ARE,Middle East,34.5,152,2009,0,0
+2024,Abu Dhabi,Yas Marina,ARE,Middle East,34.3,153,2009,0,0
+2025,Abu Dhabi,Yas Marina,ARE,Middle East,34.6,156,2009,0,0

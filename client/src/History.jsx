@@ -38,6 +38,20 @@ function History({ onSelect }) {
     }
   };
 
+  const handleDelete = async (id, e) => {
+    e.stopPropagation();
+    if (!window.confirm("Delete this analysis?")) return;
+
+    try {
+      await axios.delete(`http://localhost:3000/history/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setHistory((prev) => prev.filter((item) => item._id !== id));
+    } catch (err) {
+      setError(err.response?.data?.error || err.message);
+    }
+  };
+
   if (loading) return <p>Loading history...</p>;
 
   return (
@@ -53,6 +67,7 @@ function History({ onSelect }) {
               <th>Filename</th>
               <th>Date</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -62,6 +77,14 @@ function History({ onSelect }) {
                 <td>{new Date(item.createdAt).toLocaleString()}</td>
                 <td>
                   <button onClick={() => handleClick(item._id)}>View</button>
+                </td>
+                <td>
+                  <button
+                    onClick={(e) => handleDelete(item._id, e)}
+                    style={{ background: "#dc2626" }}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

@@ -77,7 +77,21 @@ function App() {
             {error && <span className="error-text">{error}</span>}
           </div>
 
-          {result && (
+          {loading && (
+            <>
+              <div className="card">
+                <div className="skeleton skeleton-line" style={{ width: "40%" }} />
+                <div className="skeleton skeleton-card" />
+              </div>
+              <div className="card">
+                <div className="skeleton skeleton-line" style={{ width: "30%" }} />
+                <div className="skeleton skeleton-line" style={{ width: "90%" }} />
+                <div className="skeleton skeleton-line" style={{ width: "80%" }} />
+              </div>
+            </>
+          )}
+
+          {!loading && result && (
             <>
               <div className="card">
                 <h2>Overview</h2>
