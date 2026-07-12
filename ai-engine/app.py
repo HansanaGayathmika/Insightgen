@@ -2,8 +2,15 @@ from flask import Flask, request
 import pandas as pd
 import numpy as np
 import os
+import json
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
 
 app = Flask(__name__)
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def analyze_dataset(file_path):
@@ -156,6 +163,51 @@ def auto_eda(df):
     return eda_result
 
 
+# 🔹 Step 6: AI-generated natural-language insights (OpenAI)
+def generate_ai_insights(result):
+    summary_for_ai = {
+        "rows": result["rows"],
+        "columns": result["columns"],
+        "column_details": result["column_details"],
+        "numerical_columns": result["eda"]["numerical_columns"],
+        "categorical_columns": result["eda"]["categorical_columns"],
+        "outliers": result["eda"]["outliers"],
+        "strong_correlations": result["eda"]["correlations"]["strong_pairs"],
+        "rule_based_insights": result["eda"]["insights"]
+    }
+
+    prompt = f"""You are a data analyst. Here is a summary of a dataset:
+
+{summary_for_ai}
+
+Write 3-5 concise, natural-language insights about this dataset a business user would find useful.
+Focus on patterns, data quality issues, and anything notable. Avoid restating raw numbers robotically.
+Return ONLY a JSON array of strings, nothing else. Example format:
+["Insight one.", "Insight two.", "Insight three."]
+"""
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=500,
+            temperature=0.5
+        )
+
+        response_text = response.choices[0].message.content.strip()
+
+        if response_text.startswith("```"):
+            response_text = response_text.strip(
+                "`").replace("json", "", 1).strip()
+
+        ai_insights = json.loads(response_text)
+        return ai_insights
+
+    except Exception as e:
+        print("AI insights error:", str(e))
+        return ["AI insights unavailable right now."]
+
+
 @app.route("/analyze", methods=["POST"])
 def analyze():
     data = request.json
@@ -168,7 +220,8 @@ def analyze():
         df = pd.read_csv(file_path)
 
         result = analyze_dataset(file_path)   # existing base analysis
-        result["eda"] = auto_eda(df)          # ✅ new EDA engine
+        result["eda"] = auto_eda(df)          # EDA engine
+        result["ai_insights"] = generate_ai_insights(result)  # ✅ AI insights
 
         return result
 
