@@ -9,6 +9,19 @@ import History from "./History";
 import Chat from "./Chat";
 import "./App.css";
 
+function alertColor(type) {
+  const colors = {
+    "Constant": "#f5b800",
+    "Outliers": "#f97316",
+    "Missing": "#dc2626",
+    "Duplicates": "#dc2626",
+    "Unique": "#dc2626",
+    "Skewed": "#8b5cf6",
+    "High correlation": "#6b7280"
+  };
+  return colors[type] || "#6b7280";
+}
+
 function App() {
   const { token, email, logout } = useAuth();
   const [file, setFile] = useState(null);
@@ -25,23 +38,23 @@ function App() {
   }
 
   const handleGenerateStory = async () => {
-  if (!result?.analysisId) return;
-  setStoryLoading(true);
-  setStory(null);
+    if (!result?.analysisId) return;
+    setStoryLoading(true);
+    setStory(null);
 
-  try {
-    const res = await axios.post(
-      `http://localhost:3000/story/${result.analysisId}`,
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setStory(res.data.story);
-  } catch (err) {
-    setStory("Failed to generate story.");
-  } finally {
-    setStoryLoading(false);
-  }
-};
+    try {
+      const res = await axios.post(
+        `http://localhost:3000/story/${result.analysisId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setStory(res.data.story);
+    } catch (err) {
+      setStory("Failed to generate story.");
+    } finally {
+      setStoryLoading(false);
+    }
+  };
 
   const handleUpload = async () => {
     if (!file) return;
@@ -50,6 +63,7 @@ function App() {
 
     setLoading(true);
     setError(null);
+    setStory(null);
 
     try {
       const response = await axios.post("http://localhost:3000/upload", formData, {
@@ -115,6 +129,36 @@ function App() {
 
           {!loading && result && (
             <>
+              {result.eda.alerts && result.eda.alerts.length > 0 && (
+                <div className="card">
+                  <h2>🚨 Alerts ({result.eda.alerts.length})</h2>
+                  <table>
+                    <tbody>
+                      {result.eda.alerts.map((alert, i) => (
+                        <tr key={i}>
+                          <td>
+                            {alert.column && <code>{alert.column}</code>}{" "}
+                            {alert.column ? alert.message.replace(alert.column, "").trim() : alert.message}
+                          </td>
+                          <td style={{ textAlign: "right" }}>
+                            <span style={{
+                              background: alertColor(alert.type),
+                              color: "white",
+                              padding: "0.2rem 0.6rem",
+                              borderRadius: "6px",
+                              fontSize: "0.75rem",
+                              fontWeight: 600
+                            }}>
+                              {alert.type}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
               <div className="card">
                 <h2>Overview</h2>
                 <div className="stats-row">

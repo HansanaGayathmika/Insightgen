@@ -146,6 +146,28 @@ def auto_eda(df):
 
     eda_result["suspicious_dtypes"] = suspicious_dtypes
 
+    # 🔹 Step 4.6: Constant columns + skewness
+    constant_columns = []
+    for col in df.columns:
+        if df[col].nunique(dropna=True) == 1:
+            constant_columns.append(col)
+            insights.append(
+                f"'{col}' has a constant value — provides no useful information.")
+
+    eda_result["constant_columns"] = constant_columns
+
+    skewness = {}
+    for col in numerical_cols:
+        skew_val = df[col].skew()
+        if pd.notna(skew_val):
+            skewness[col] = round(float(skew_val), 2)
+            if abs(skew_val) > 1:
+                direction = "right" if skew_val > 0 else "left"
+                insights.append(
+                    f"'{col}' is heavily skewed to the {direction} (skewness: {round(skew_val, 2)}) — consider a log transform.")
+
+    eda_result["skewness"] = skewness
+
     # 🔹 Step 5: Correlation detection (numeric columns only)
     correlations = {}
     if len(numerical_cols) >= 2:
@@ -181,6 +203,48 @@ def auto_eda(df):
     eda_result["correlations"] = correlations
 
     eda_result["insights"] = insights
+
+    # 🔹 Step 5.5: Unified Alerts array (badge-style, like ydata-profiling)
+    alerts = []
+
+    for col in constant_columns:
+        alerts.append(
+            {"column": col, "message": f"{col} has a constant value", "type": "Constant"})
+
+    for col, val in outliers.items():
+        if val["count"] > 0:
+            alerts.append(
+                {"column": col, "message": f"{col} has {val['count']} outliers", "type": "Outliers"})
+
+    for col in df.columns:
+        missing = int(df[col].isnull().sum())
+        if missing > 0:
+            pct = round((missing / df.shape[0]) * 100, 1)
+            alerts.append(
+                {"column": col, "message": f"{col} has {pct}% missing values", "type": "Missing"})
+
+    if duplicate_count > 0:
+        alerts.append(
+            {"column": None, "message": f"Dataset has {duplicate_count} duplicate rows", "type": "Duplicates"})
+
+    for col in categorical_cols:
+        if df[col].nunique() == df.shape[0]:
+            alerts.append(
+                {"column": col, "message": f"{col} has unique values", "type": "Unique"})
+
+    for col, skew_val in skewness.items():
+        if abs(skew_val) > 1:
+            alerts.append(
+                {"column": col, "message": f"{col} is heavily skewed ({skew_val})", "type": "Skewed"})
+
+    for pair in correlations["strong_pairs"]:
+        alerts.append({
+            "column": None,
+            "message": f"{pair['column_a']} is highly correlated with {pair['column_b']}",
+            "type": "High correlation"
+        })
+
+    eda_result["alerts"] = alerts
     return eda_result
 
 
