@@ -116,6 +116,19 @@ function App() {
                 </ul>
               </div>
 
+              {result.ai_insights && (
+                <div className="card">
+                  <h2>🤖 AI Insights</h2>
+                  <ul className="insights-list">
+                    {result.ai_insights.map((insight, i) => (
+                      <li key={i} style={{ background: "#eef1ff", borderLeft: "4px solid #4f46e5" }}>
+                        {insight}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <div className="card">
                 <h2>Column Details</h2>
                 <table>

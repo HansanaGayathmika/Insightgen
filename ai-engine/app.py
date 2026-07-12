@@ -4,13 +4,14 @@ import numpy as np
 import os
 import json
 from dotenv import load_dotenv
-from openai import OpenAI
+import google.generativeai as genai
 
 load_dotenv()
 
 app = Flask(__name__)
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+gemini_model = genai.GenerativeModel("gemini-2.5-flash")
 
 
 def analyze_dataset(file_path):
@@ -75,7 +76,6 @@ def auto_eda(df):
     # 🔹 Step 3: Chart-ready data
     charts = {}
 
-    # Histograms for numeric columns (binned counts)
     for col in numerical_cols:
         counts, bin_edges = np.histogram(df[col].dropna(), bins=10)
         charts[col] = {
@@ -84,7 +84,6 @@ def auto_eda(df):
             "counts": [int(c) for c in counts]
         }
 
-    # Bar charts for categorical columns (top 10 categories)
     for col in categorical_cols:
         value_counts = df[col].value_counts().head(10)
         charts[col] = {
@@ -163,7 +162,7 @@ def auto_eda(df):
     return eda_result
 
 
-# 🔹 Step 6: AI-generated natural-language insights (OpenAI)
+# 🔹 Step 6: AI-generated natural-language insights (Gemini)
 def generate_ai_insights(result):
     summary_for_ai = {
         "rows": result["rows"],
@@ -187,14 +186,8 @@ Return ONLY a JSON array of strings, nothing else. Example format:
 """
 
     try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=500,
-            temperature=0.5
-        )
-
-        response_text = response.choices[0].message.content.strip()
+        response = gemini_model.generate_content(prompt)
+        response_text = response.text.strip()
 
         if response_text.startswith("```"):
             response_text = response_text.strip(
@@ -219,9 +212,9 @@ def analyze():
     try:
         df = pd.read_csv(file_path)
 
-        result = analyze_dataset(file_path)   # existing base analysis
-        result["eda"] = auto_eda(df)          # EDA engine
-        result["ai_insights"] = generate_ai_insights(result)  # ✅ AI insights
+        result = analyze_dataset(file_path)
+        result["eda"] = auto_eda(df)
+        result["ai_insights"] = generate_ai_insights(result)
 
         return result
 
