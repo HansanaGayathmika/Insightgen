@@ -124,6 +124,28 @@ def auto_eda(df):
 
     eda_result["insights"] = insights
 
+    # 🔹 Step 4.5: Duplicate rows + suspicious data types
+    duplicate_count = int(df.duplicated().sum())
+    if duplicate_count > 0:
+        dup_pct = round((duplicate_count / df.shape[0]) * 100, 1)
+        insights.append(
+            f"Dataset contains {duplicate_count} duplicate rows ({dup_pct}%) — consider removing before analysis.")
+
+    eda_result["duplicate_rows"] = duplicate_count
+
+    # Detect columns that look numeric but are stored as text (wrong dtype)
+    suspicious_dtypes = []
+    for col in categorical_cols:
+        sample = df[col].dropna().astype(str).head(50)
+        numeric_like = sample.str.replace('.', '', regex=False).str.replace(
+            '-', '', regex=False).str.isnumeric()
+        if len(sample) > 0 and numeric_like.mean() > 0.8:
+            suspicious_dtypes.append(col)
+            insights.append(
+                f"'{col}' looks numeric but is stored as text — consider converting its data type.")
+
+    eda_result["suspicious_dtypes"] = suspicious_dtypes
+
     # 🔹 Step 5: Correlation detection (numeric columns only)
     correlations = {}
     if len(numerical_cols) >= 2:
