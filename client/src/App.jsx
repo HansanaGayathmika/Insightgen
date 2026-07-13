@@ -22,6 +22,32 @@ function alertColor(type) {
   return colors[type] || "#6b7280";
 }
 
+function calculateHealthScore(result) {
+  if (!result?.eda) return 100;
+
+  const totalCells = result.rows * result.columns;
+  const totalMissing = result.column_details.reduce((sum, col) => sum + col.missing_values, 0);
+  const missingPct = totalCells > 0 ? (totalMissing / totalCells) * 100 : 0;
+
+  const alertCount = result.eda.alerts?.length || 0;
+  const duplicatePct = result.rows > 0
+    ? ((result.eda.duplicate_rows || 0) / result.rows) * 100
+    : 0;
+
+  let score = 100;
+  score -= missingPct * 1.5;
+  score -= duplicatePct * 1;
+  score -= alertCount * 2;
+
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+function healthTier(score) {
+  if (score >= 80) return "good";
+  if (score >= 50) return "warn";
+  return "bad";
+}
+
 function App() {
   const { token, email, logout } = useAuth();
   const [file, setFile] = useState(null);
@@ -172,6 +198,37 @@ function App() {
 
             {!loading && result && (
               <>
+                {(() => {
+                  const score = calculateHealthScore(result);
+                  const tier = healthTier(score);
+                  return (
+                    <div className="hero-card">
+                      <div>
+                        <span className="badge-tag">📁 Current Dataset</span>
+                        <h1>{result.filename || "Uploaded Dataset"}</h1>
+                        <p>
+                          {result.rows.toLocaleString()} rows across {result.columns} columns.
+                          InsightGen scanned this dataset for data quality issues, anomalies, and patterns.
+                        </p>
+                      </div>
+                      <div className="hero-stats">
+                        <div className="hero-stat-box">
+                          <div className="value">{result.rows.toLocaleString()}</div>
+                          <div className="label">Rows</div>
+                        </div>
+                        <div className="hero-stat-box">
+                          <div className="value">{result.columns}</div>
+                          <div className="label">Columns</div>
+                        </div>
+                        <div className={`hero-stat-box health-${tier}`}>
+                          <div className="value">{score}%</div>
+                          <div className="label">Health Score</div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 {result.eda.alerts && result.eda.alerts.length > 0 && (
                   <div className="card">
                     <h2>🚨 Alerts ({result.eda.alerts.length})</h2>
