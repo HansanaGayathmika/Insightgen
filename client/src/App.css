@@ -306,3 +306,68 @@ ul.insights-list li {
   .sidebar-nav { flex-direction: row; overflow-x: auto; }
   .sidebar-user { display: none; }
 }
+
+/* ✅ Dashboard Hero Card */
+.hero-card {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.hero-card .badge-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  padding: 0.25rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  margin-bottom: 0.8rem;
+}
+
+.hero-card h1 {
+  font-size: 1.6rem;
+  margin: 0 0 0.6rem 0;
+}
+
+.hero-card p {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  max-width: 480px;
+  line-height: 1.5;
+  margin: 0 0 1.2rem 0;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.hero-stat-box {
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 0.7rem 1.2rem;
+  text-align: center;
+  min-width: 90px;
+}
+
+.hero-stat-box .value {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.hero-stat-box .label {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.hero-stat-box.health-good .value { color: #86efac; }
+.hero-stat-box.health-warn .value { color: #fde047; }
+.hero-stat-box.health-bad .value { color: #fca5a5; }

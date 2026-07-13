@@ -81,255 +81,299 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <div className="header" style={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <span style={{ fontSize: "1.8rem" }}>📊</span>
-          <h1>InsightGen</h1>
+    <div className="app-shell">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <div className="sidebar-logo">
+          <span className="icon">📊</span>
+          <div className="brand">
+            <h1>InsightGen</h1>
+            <span>AI ANALYTICS</span>
+          </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <button onClick={() => setView("upload")}>New Upload</button>
-          <button onClick={() => setView("history")}>History</button>
-          <span style={{ color: "#666" }}>{email}</span>
+
+        <nav className="sidebar-nav">
+          <button
+            className={`sidebar-nav-item ${view === "upload" ? "active" : ""}`}
+            onClick={() => setView("upload")}
+          >
+            🏠 Dashboard
+          </button>
+          <button
+            className={`sidebar-nav-item ${view === "upload" ? "active" : ""}`}
+            onClick={() => setView("upload")}
+          >
+            📤 Data Upload
+          </button>
+          <button
+            className={`sidebar-nav-item ${view === "history" ? "active" : ""}`}
+            onClick={() => setView("history")}
+          >
+            🕒 History
+          </button>
+          <button
+            className="sidebar-nav-item"
+            disabled
+            style={{ opacity: 0.4, cursor: "default" }}
+          >
+            📋 Column Details
+          </button>
+          <button
+            className="sidebar-nav-item"
+            disabled
+            style={{ opacity: 0.4, cursor: "default" }}
+          >
+            ⚙️ Settings
+          </button>
+        </nav>
+
+        <div className="sidebar-user">
+          <div className="avatar">{email ? email[0].toUpperCase() : "U"}</div>
+          <div className="info">
+            <div className="name">{email}</div>
+          </div>
           <button onClick={logout}>Logout</button>
         </div>
-      </div>
+      </aside>
 
-      {view === "history" && (
-        <History onSelect={(data) => { setResult(data); setView("upload"); }} />
-      )}
+      {/* Main content area */}
+      <main className="main-content">
+        {view === "history" && (
+          <History onSelect={(data) => { setResult(data); setView("upload"); }} />
+        )}
 
-      {view === "upload" && (
-        <>
-          <div className="upload-bar">
-            <input
-              type="file"
-              accept=".csv"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-            <button onClick={handleUpload} disabled={!file || loading}>
-              {loading ? "Analyzing..." : "Upload & Analyze"}
-            </button>
-            {error && <span className="error-text">{error}</span>}
-          </div>
+        {view === "upload" && (
+          <>
+            <div className="upload-bar">
+              <input
+                type="file"
+                accept=".csv"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+              <button onClick={handleUpload} disabled={!file || loading}>
+                {loading ? "Analyzing..." : "Upload & Analyze"}
+              </button>
+              {error && <span className="error-text">{error}</span>}
+            </div>
 
-          {loading && (
-            <>
-              <div className="card">
-                <div className="skeleton skeleton-line" style={{ width: "40%" }} />
-                <div className="skeleton skeleton-card" />
-              </div>
-              <div className="card">
-                <div className="skeleton skeleton-line" style={{ width: "30%" }} />
-                <div className="skeleton skeleton-line" style={{ width: "90%" }} />
-                <div className="skeleton skeleton-line" style={{ width: "80%" }} />
-              </div>
-            </>
-          )}
-
-          {!loading && result && (
-            <>
-              {result.eda.alerts && result.eda.alerts.length > 0 && (
+            {loading && (
+              <>
                 <div className="card">
-                  <h2>🚨 Alerts ({result.eda.alerts.length})</h2>
-                  <table>
-                    <tbody>
-                      {result.eda.alerts.map((alert, i) => (
-                        <tr key={i}>
-                          <td>
-                            {alert.column && <code>{alert.column}</code>}{" "}
-                            {alert.column ? alert.message.replace(alert.column, "").trim() : alert.message}
-                          </td>
-                          <td style={{ textAlign: "right" }}>
-                            <span style={{
-                              background: alertColor(alert.type),
-                              color: "white",
-                              padding: "0.2rem 0.6rem",
-                              borderRadius: "6px",
-                              fontSize: "0.75rem",
-                              fontWeight: 600
-                            }}>
-                              {alert.type}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="skeleton skeleton-line" style={{ width: "40%" }} />
+                  <div className="skeleton skeleton-card" />
                 </div>
-              )}
-
-              <div className="card">
-                <h2>Overview</h2>
-                <div className="stats-row">
-                  <div className="stat-box">
-                    <div className="value">{result.rows}</div>
-                    <div className="label">Rows</div>
-                  </div>
-                  <div className="stat-box">
-                    <div className="value">{result.columns}</div>
-                    <div className="label">Columns</div>
-                  </div>
+                <div className="card">
+                  <div className="skeleton skeleton-line" style={{ width: "30%" }} />
+                  <div className="skeleton skeleton-line" style={{ width: "90%" }} />
+                  <div className="skeleton skeleton-line" style={{ width: "80%" }} />
                 </div>
-              </div>
+              </>
+            )}
 
-              <div className="card">
-                <h2>📖 Dataset Story</h2>
-                <button onClick={handleGenerateStory} disabled={storyLoading}>
-                  {storyLoading ? "Writing story..." : "Explain my dataset"}
-                </button>
-                {story && (
-                  <p style={{ marginTop: "1rem", lineHeight: "1.6" }}>{story}</p>
+            {!loading && result && (
+              <>
+                {result.eda.alerts && result.eda.alerts.length > 0 && (
+                  <div className="card">
+                    <h2>🚨 Alerts ({result.eda.alerts.length})</h2>
+                    <table>
+                      <tbody>
+                        {result.eda.alerts.map((alert, i) => (
+                          <tr key={i}>
+                            <td>
+                              {alert.column && <code>{alert.column}</code>}{" "}
+                              {alert.column ? alert.message.replace(alert.column, "").trim() : alert.message}
+                            </td>
+                            <td style={{ textAlign: "right" }}>
+                              <span style={{
+                                background: alertColor(alert.type),
+                                color: "white",
+                                padding: "0.2rem 0.6rem",
+                                borderRadius: "6px",
+                                fontSize: "0.75rem",
+                                fontWeight: 600
+                              }}>
+                                {alert.type}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )}
-              </div>
 
-              {result.analysisId && <Chat analysisId={result.analysisId} />}
-
-              <div className="card">
-                <h2>Insights</h2>
-                <ul className="insights-list">
-                  {result.eda.insights.map((insight, i) => (
-                    <li key={i}>{insight}</li>
-                  ))}
-                </ul>
-              </div>
-
-              {result.ai_insights && (
                 <div className="card">
-                  <h2>🤖 AI Insights</h2>
+                  <h2>Overview</h2>
+                  <div className="stats-row">
+                    <div className="stat-box">
+                      <div className="value">{result.rows}</div>
+                      <div className="label">Rows</div>
+                    </div>
+                    <div className="stat-box">
+                      <div className="value">{result.columns}</div>
+                      <div className="label">Columns</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card">
+                  <h2>📖 Dataset Story</h2>
+                  <button onClick={handleGenerateStory} disabled={storyLoading}>
+                    {storyLoading ? "Writing story..." : "Explain my dataset"}
+                  </button>
+                  {story && (
+                    <p style={{ marginTop: "1rem", lineHeight: "1.6" }}>{story}</p>
+                  )}
+                </div>
+
+                {result.analysisId && <Chat analysisId={result.analysisId} />}
+
+                <div className="card">
+                  <h2>Insights</h2>
                   <ul className="insights-list">
-                    {result.ai_insights.map((insight, i) => (
-                      <li key={i} style={{ background: "#eef1ff", borderLeft: "4px solid #4f46e5" }}>
-                        {insight}
-                      </li>
+                    {result.eda.insights.map((insight, i) => (
+                      <li key={i}>{insight}</li>
                     ))}
                   </ul>
                 </div>
-              )}
 
-              {result.suggestions && (
+                {result.ai_insights && (
+                  <div className="card">
+                    <h2>🤖 AI Insights</h2>
+                    <ul className="insights-list">
+                      {result.ai_insights.map((insight, i) => (
+                        <li key={i} style={{ background: "#eef1ff", borderLeft: "4px solid #4f46e5" }}>
+                          {insight}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {result.suggestions && (
+                  <div className="card">
+                    <h2>🛠 Recommended Actions</h2>
+                    <ul className="insights-list">
+                      {result.suggestions.map((suggestion, i) => (
+                        <li key={i} style={{ background: "#e8f9ee", borderLeft: "4px solid #22c55e" }}>
+                          {suggestion}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 <div className="card">
-                  <h2>🛠 Recommended Actions</h2>
-                  <ul className="insights-list">
-                    {result.suggestions.map((suggestion, i) => (
-                      <li key={i} style={{ background: "#e8f9ee", borderLeft: "4px solid #22c55e" }}>
-                        {suggestion}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div className="card">
-                <h2>Column Details</h2>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th>Missing</th>
-                      <th>Unique</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {result.column_details.map((col, i) => (
-                      <tr key={i}>
-                        <td>{col.name}</td>
-                        <td>{col.datatype}</td>
-                        <td>{col.missing_values}</td>
-                        <td>{col.unique_values}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="card">
-                <h2>Category Charts</h2>
-                <div className="chart-grid">
-                  {Object.entries(result.eda.charts)
-                    .filter(([_, chart]) => chart.type === "bar")
-                    .map(([colName, chart]) => (
-                      <div key={colName}>
-                        <h3>{colName}</h3>
-                        <ResponsiveContainer width="100%" height={220}>
-                          <BarChart
-                            data={chart.labels.map((label, i) => ({
-                              name: label,
-                              count: chart.counts[i]
-                            }))}
-                          >
-                            <XAxis dataKey="name" hide />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="count" fill="#4f46e5" radius={[4, 4, 0, 0]} />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    ))}
-                </div>
-              </div>
-
-              <div className="card">
-                <h2>Numeric Distributions</h2>
-                <div className="chart-grid">
-                  {Object.entries(result.eda.charts)
-                    .filter(([_, chart]) => chart.type === "histogram")
-                    .map(([colName, chart]) => (
-                      <div key={colName}>
-                        <h3>{colName}</h3>
-                        <ResponsiveContainer width="100%" height={220}>
-                          <BarChart
-                            data={chart.bins.slice(0, -1).map((bin, i) => ({
-                              name: `${bin}`,
-                              count: chart.counts[i]
-                            }))}
-                          >
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="count" fill="#22c55e" radius={[4, 4, 0, 0]} />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    ))}
-                </div>
-              </div>
-
-              <div className="card">
-                <h2>Correlation Heatmap</h2>
-                {result.eda.correlations.strong_pairs.length === 0 ? (
-                  <p>No strong correlations found.</p>
-                ) : (
+                  <h2>Column Details</h2>
                   <table>
                     <thead>
                       <tr>
-                        <th>Column A</th>
-                        <th>Column B</th>
-                        <th>Correlation</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Missing</th>
+                        <th>Unique</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {result.eda.correlations.strong_pairs.map((pair, i) => (
+                      {result.column_details.map((col, i) => (
                         <tr key={i}>
-                          <td>{pair.column_a}</td>
-                          <td>{pair.column_b}</td>
-                          <td style={{
-                            color: pair.correlation > 0 ? "#16a34a" : "#dc2626",
-                            fontWeight: "bold"
-                          }}>
-                            {pair.correlation}
-                          </td>
+                          <td>{col.name}</td>
+                          <td>{col.datatype}</td>
+                          <td>{col.missing_values}</td>
+                          <td>{col.unique_values}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                )}
-              </div>
-            </>
-          )}
-        </>
-      )}
+                </div>
+
+                <div className="card">
+                  <h2>Category Charts</h2>
+                  <div className="chart-grid">
+                    {Object.entries(result.eda.charts)
+                      .filter(([_, chart]) => chart.type === "bar")
+                      .map(([colName, chart]) => (
+                        <div key={colName}>
+                          <h3>{colName}</h3>
+                          <ResponsiveContainer width="100%" height={220}>
+                            <BarChart
+                              data={chart.labels.map((label, i) => ({
+                                name: label,
+                                count: chart.counts[i]
+                              }))}
+                            >
+                              <XAxis dataKey="name" hide />
+                              <YAxis />
+                              <Tooltip />
+                              <Bar dataKey="count" fill="#4f46e5" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="card">
+                  <h2>Numeric Distributions</h2>
+                  <div className="chart-grid">
+                    {Object.entries(result.eda.charts)
+                      .filter(([_, chart]) => chart.type === "histogram")
+                      .map(([colName, chart]) => (
+                        <div key={colName}>
+                          <h3>{colName}</h3>
+                          <ResponsiveContainer width="100%" height={220}>
+                            <BarChart
+                              data={chart.bins.slice(0, -1).map((bin, i) => ({
+                                name: `${bin}`,
+                                count: chart.counts[i]
+                              }))}
+                            >
+                              <XAxis dataKey="name" />
+                              <YAxis />
+                              <Tooltip />
+                              <Bar dataKey="count" fill="#22c55e" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="card">
+                  <h2>Correlation Heatmap</h2>
+                  {result.eda.correlations.strong_pairs.length === 0 ? (
+                    <p>No strong correlations found.</p>
+                  ) : (
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Column A</th>
+                          <th>Column B</th>
+                          <th>Correlation</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {result.eda.correlations.strong_pairs.map((pair, i) => (
+                          <tr key={i}>
+                            <td>{pair.column_a}</td>
+                            <td>{pair.column_b}</td>
+                            <td style={{
+                              color: pair.correlation > 0 ? "#16a34a" : "#dc2626",
+                              fontWeight: "bold"
+                            }}>
+                              {pair.correlation}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </main>
     </div>
   );
 }
