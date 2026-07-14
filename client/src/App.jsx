@@ -145,10 +145,16 @@ function App() {
             <span className="text-sm">History</span>
           </button>
 
-          <button disabled className="w-full text-left flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant opacity-40 cursor-default">
+          <button
+            onClick={() => setView("columns")}
+            className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+              view === "columns" ? "border-l-4 border-primary bg-surface-container-high text-primary font-bold" : "text-on-surface-variant hover:bg-surface-container"
+            }`}
+          >
             <span className="material-symbols-outlined">view_column</span>
             <span className="text-sm">Column Details</span>
           </button>
+
           <button disabled className="w-full text-left flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant opacity-40 cursor-default">
             <span className="material-symbols-outlined">settings</span>
             <span className="text-sm">Settings</span>
@@ -207,6 +213,10 @@ function App() {
         <div className="p-8 max-w-[1400px] mx-auto w-full space-y-8">
           {view === "history" && (
             <History onSelect={(data) => { setResult(data); setView("upload"); }} />
+          )}
+
+          {view === "columns" && (
+            <ColumnDetails result={result} token={token} />
           )}
 
           {view === "upload" && (
