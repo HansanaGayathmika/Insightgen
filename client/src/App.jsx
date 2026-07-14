@@ -51,6 +51,9 @@ function App() {
   const [view, setView] = useState("upload");
   const [story, setStory] = useState(null);
   const [storyLoading, setStoryLoading] = useState(false);
+  const [applyingIndex, setApplyingIndex] = useState(null);
+  const [suggestionAnswer, setSuggestionAnswer] = useState(null);
+  const [suggestionLoading, setSuggestionLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   if (!token) return <Auth />;
@@ -80,6 +83,8 @@ function App() {
     setLoading(true);
     setError(null);
     setStory(null);
+    setApplyingIndex(null);
+    setSuggestionAnswer(null);
     try {
       const response = await axios.post("http://localhost:3000/upload", formData, {
         headers: {
@@ -92,6 +97,34 @@ function App() {
       setError(err.response?.data?.error || err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleApplySuggestion = async (suggestionText, index) => {
+    if (!result?.analysisId) return;
+
+    // Toggle closed if clicking the same row again
+    if (applyingIndex === index) {
+      setApplyingIndex(null);
+      setSuggestionAnswer(null);
+      return;
+    }
+
+    setApplyingIndex(index);
+    setSuggestionAnswer(null);
+    setSuggestionLoading(true);
+
+    try {
+      const res = await axios.post(
+        `http://localhost:3000/chat/${result.analysisId}`,
+        { question: `How exactly do I do this: "${suggestionText}"? Give me the specific pandas code or steps.` },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSuggestionAnswer(res.data.answer);
+    } catch (err) {
+      setSuggestionAnswer("Couldn't generate steps right now.");
+    } finally {
+      setSuggestionLoading(false);
     }
   };
 
@@ -423,15 +456,82 @@ function App() {
                         })}
                       </div>
 
-                      {result.suggestions && (
+                      {result.suggestions && result.suggestions.length > 0 && (
                         <div className="bg-white rounded-xl shadow-md overflow-hidden">
                           <div className="p-6 border-b border-outline-variant">
-                            <h3 className="text-lg font-bold text-on-surface">🛠 Recommended Actions</h3>
+                            <h3 className="text-lg font-bold text-on-surface">Recommended Data Actions</h3>
                           </div>
-                          <div className="divide-y divide-outline-variant">
-                            {result.suggestions.map((s, i) => (
-                              <div key={i} className="px-6 py-4 text-sm text-on-surface-variant">{s}</div>
-                            ))}
+                          <div className="overflow-x-auto custom-scrollbar">
+                            <table className="w-full text-left border-collapse">
+                              <thead>
+                                <tr className="bg-surface-container-low">
+                                  <th className="px-6 py-4 text-xs text-on-surface-variant uppercase tracking-wider font-bold">Target Column</th>
+                                  <th className="px-6 py-4 text-xs text-on-surface-variant uppercase tracking-wider font-bold">Suggested Fix</th>
+                                  <th className="px-6 py-4 text-xs text-on-surface-variant uppercase tracking-wider font-bold text-center">Confidence</th>
+                                  <th className="px-6 py-4 text-xs text-on-surface-variant uppercase tracking-wider font-bold text-right">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-outline-variant">
+                                {result.suggestions.map((s, i) => {
+                                  const isStructured = typeof s === "object" && s !== null;
+                                  const confColor = isStructured && s.confidence >= 90
+                                    ? "bg-tertiary-fixed-dim/20 text-tertiary"
+                                    : "bg-secondary-container/10 text-secondary";
+                                  const fixText = isStructured ? s.suggested_fix : s;
+
+                                  return (
+                                    <>
+                                      <tr key={i} className="hover:bg-surface-container-lowest transition-colors">
+                                        <td className="px-6 py-5">
+                                          {isStructured && s.target_column ? (
+                                            <span className="font-mono text-xs bg-surface-container px-2 py-1 rounded">{s.target_column}</span>
+                                          ) : (
+                                            <span className="text-xs text-on-surface-variant">Dataset-wide</span>
+                                          )}
+                                        </td>
+                                        <td className="px-6 py-5 text-sm text-on-surface">{fixText}</td>
+                                        <td className="px-6 py-5 text-center">
+                                          {isStructured && s.confidence != null && (
+                                            <span className={`px-3 py-1 rounded-full font-bold text-xs ${confColor}`}>
+                                              {s.confidence}%
+                                            </span>
+                                          )}
+                                        </td>
+                                        <td className="px-6 py-5 text-right">
+                                          <button
+                                            onClick={() => handleApplySuggestion(fixText, i)}
+                                            className="text-primary font-bold text-sm hover:text-secondary transition-colors"
+                                          >
+                                            {applyingIndex === i ? "Hide" : "Apply"}
+                                          </button>
+                                        </td>
+                                      </tr>
+
+                                      {applyingIndex === i && (
+                                        <tr key={`${i}-detail`}>
+                                          <td colSpan={4} className="px-6 py-5 bg-surface-container-low border-l-4 border-primary">
+                                            <div className="flex justify-between items-start mb-2">
+                                              <h4 className="font-bold text-on-surface text-sm">How to: {fixText}</h4>
+                                              <button
+                                                onClick={() => { setApplyingIndex(null); setSuggestionAnswer(null); }}
+                                                className="text-on-surface-variant text-xs"
+                                              >
+                                                ✕
+                                              </button>
+                                            </div>
+                                            {suggestionLoading ? (
+                                              <p className="text-sm text-on-surface-variant">Generating steps...</p>
+                                            ) : (
+                                              <p className="text-sm text-on-surface-variant leading-relaxed whitespace-pre-wrap">{suggestionAnswer}</p>
+                                            )}
+                                          </td>
+                                        </tr>
+                                      )}
+                                    </>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       )}
