@@ -6,6 +6,7 @@ import {
 import { useAuth } from "./AuthContext";
 import Auth from "./Auth";
 import History from "./History";
+import ColumnDetails from "./ColumnDetails";
 import Chat from "./Chat";
 
 function calculateHealthScore(result) {
