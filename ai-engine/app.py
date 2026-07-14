@@ -248,7 +248,7 @@ def auto_eda(df):
     return eda_result
 
 
-# 🔹 Step 6: AI-generated natural-language insights (Gemini)
+# 🔹 Step 6: AI-generated structured insights (Gemini)
 def generate_ai_insights(result):
     summary_for_ai = {
         "rows": result["rows"],
@@ -261,14 +261,25 @@ def generate_ai_insights(result):
         "rule_based_insights": result["eda"]["insights"]
     }
 
-    prompt = f"""You are a data analyst. Here is a summary of a dataset:
+    prompt = f"""You are a senior data analyst. Here is a summary of a dataset:
 
 {summary_for_ai}
 
-Write 3-5 concise, natural-language insights about this dataset a business user would find useful.
-Focus on patterns, data quality issues, and anything notable. Avoid restating raw numbers robotically.
-Return ONLY a JSON array of strings, nothing else. Example format:
-["Insight one.", "Insight two.", "Insight three."]
+Generate 2-4 notable insights about this dataset. For each insight, return an object with:
+- "category": a short 2-word uppercase label describing the type of insight (e.g. "CONTENT TREND", "GENRE SHIFT", "DATA QUALITY", "GROWTH PATTERN")
+- "title": a punchy 3-6 word headline (e.g. "Rise in International Content")
+- "description": 1-2 sentences explaining the insight in plain English, with **bold** around key numbers using double asterisks
+- "tags": an array of 2 short one-word or two-word topic tags (e.g. ["Streaming", "Geography"])
+
+Return ONLY a JSON array of objects in this exact format, nothing else:
+[
+  {{
+    "category": "CONTENT TREND",
+    "title": "Rise in International TV",
+    "description": "Content produced outside the US has grown by **42%** since 2018.",
+    "tags": ["Streaming", "Geography"]
+  }}
+]
 """
 
     try:
@@ -284,11 +295,10 @@ Return ONLY a JSON array of strings, nothing else. Example format:
 
     except Exception as e:
         print("AI insights error:", str(e))
-        return ["AI insights unavailable right now."]
-
-    # 🔹 Step 7: Actionable suggestions (Gemini)
+        return []
 
 
+# 🔹 Step 7: Actionable suggestions (Gemini)
 def generate_suggestions(result):
     summary_for_ai = {
         "rows": result["rows"],
@@ -307,20 +317,17 @@ def generate_suggestions(result):
 
 {summary_for_ai}
 
-Give 3-5 specific, actionable recommendations for cleaning or improving this dataset before analysis or modeling.
-Each suggestion must be a concrete action, not an observation.
+Give 3-5 specific, actionable recommendations for cleaning or improving this dataset.
+For each, return an object with:
+- "target_column": the exact column name this applies to (use null if it's dataset-wide, e.g. duplicates)
+- "suggested_fix": a short, concrete action, e.g. "Standardize 12 country name variations (e.g. 'USA' to 'United States')"
+- "confidence": your confidence this fix is correct and safe to apply, as an integer 0-100
 
-Good examples:
-- "Fill missing values in 'price' using the median, since the distribution is skewed."
-- "Drop the 'id' column before modeling — it has no predictive value."
-- "Remove the 120 duplicate rows before running further analysis."
-- "Convert 'zip_code' to text type — it's currently stored as a number."
-
-Bad examples (do NOT do this, these are just observations, not actions):
-- "The 'price' column has missing values."
-- "There are duplicate rows in the dataset."
-
-Return ONLY a JSON array of strings, nothing else.
+Return ONLY a JSON array of objects in this exact format, nothing else:
+[
+  {{"target_column": "country", "suggested_fix": "Standardize inconsistent country name spellings", "confidence": 98}},
+  {{"target_column": "rating", "suggested_fix": "Fill 4 missing ratings using content description keywords", "confidence": 82}}
+]
 """
 
     try:
@@ -336,11 +343,10 @@ Return ONLY a JSON array of strings, nothing else.
 
     except Exception as e:
         print("Suggestions error:", str(e))
-        return ["Suggestions unavailable right now."]
-
-    # 🔹 Step 8: Auto Story Generator (Gemini)
+        return []
 
 
+# 🔹 Step 8: Auto Story Generator (Gemini)
 def generate_story(result):
     summary_for_ai = {
         "rows": result["rows"],

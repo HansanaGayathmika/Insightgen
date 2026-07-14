@@ -100,6 +100,9 @@ function App() {
   const outlierAlert = result?.eda?.alerts?.find(a => a.type === "Outliers");
   const uniqueAlert = result?.eda?.alerts?.find(a => a.type === "Unique");
 
+  const insightBorderColors = ["border-secondary", "border-tertiary-fixed-dim", "border-primary", "border-yellow-400"];
+  const insightIconColors = ["text-secondary", "text-tertiary", "text-primary", "text-yellow-500"];
+
   return (
     <div className="bg-background text-on-background min-h-screen flex">
       {/* SIDEBAR */}
@@ -376,15 +379,48 @@ function App() {
                     <div className="lg:col-span-8 space-y-6">
                       <h3 className="text-xl font-bold text-on-surface">AI Insights</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {(result.ai_insights || []).map((insight, i) => (
-                          <div key={i} className="bg-white p-6 rounded-xl shadow-md border-l-4 border-secondary">
-                            <div className="flex items-center gap-2 mb-3">
-                              <span className="material-symbols-outlined text-secondary">auto_awesome</span>
-                              <span className="text-xs font-bold text-secondary uppercase">Insight {i + 1}</span>
+                        {(result.ai_insights || []).map((insight, i) => {
+                          const isStructured = typeof insight === "object" && insight !== null;
+                          const borderColor = insightBorderColors[i % insightBorderColors.length];
+                          const iconColor = insightIconColors[i % insightIconColors.length];
+
+                          return (
+                            <div key={i} className={`bg-white p-6 rounded-xl shadow-md border-l-4 ${borderColor}`}>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className={`material-symbols-outlined ${iconColor}`}>auto_awesome</span>
+                                <span className={`text-xs font-bold uppercase ${iconColor}`}>
+                                  {isStructured ? insight.category : `Insight ${i + 1}`}
+                                </span>
+                              </div>
+
+                              {isStructured ? (
+                                <>
+                                  <h5 className="text-lg font-bold text-on-surface mb-2">{insight.title}</h5>
+                                  <p
+                                    className="text-sm text-on-surface-variant leading-relaxed"
+                                    dangerouslySetInnerHTML={{
+                                      __html: insight.description.replace(
+                                        /\*\*(.*?)\*\*/g,
+                                        "<strong class='text-on-surface font-bold'>$1</strong>"
+                                      )
+                                    }}
+                                  />
+                                  {insight.tags && (
+                                    <div className="mt-4 flex gap-2 flex-wrap">
+                                      {insight.tags.map((tag, ti) => (
+                                        <span key={ti} className="px-2 py-1 bg-surface-container text-primary rounded text-[10px] font-bold uppercase">
+                                          {tag}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
+                                </>
+                              ) : (
+                                <p className="text-sm text-on-surface-variant leading-relaxed">{insight}</p>
+                              )}
                             </div>
-                            <p className="text-sm text-on-surface-variant leading-relaxed">{insight}</p>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
 
                       {result.suggestions && (
