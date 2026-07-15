@@ -103,7 +103,6 @@ function App() {
   const handleApplySuggestion = async (suggestionText, index) => {
     if (!result?.analysisId) return;
 
-    // Toggle closed if clicking the same row again
     if (applyingIndex === index) {
       setApplyingIndex(null);
       setSuggestionAnswer(null);
@@ -126,6 +125,21 @@ function App() {
     } finally {
       setSuggestionLoading(false);
     }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile && droppedFile.name.toLowerCase().endsWith(".csv")) {
+      setFile(droppedFile);
+      setError(null);
+    } else {
+      setError("Only CSV files are allowed");
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
   };
 
   const score = result ? calculateHealthScore(result) : 0;
@@ -257,21 +271,64 @@ function App() {
 
           {view === "upload" && (
             <>
-              {/* Upload bar */}
-              <div className="bg-white rounded-xl shadow-md p-6 flex items-center gap-4 flex-wrap">
-                <input
-                  type="file"
-                  accept=".csv"
-                  onChange={(e) => setFile(e.target.files[0])}
-                />
-                <button
-                  onClick={handleUpload}
-                  disabled={!file || loading}
-                  className="bg-primary text-on-primary px-6 py-2 rounded-lg font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary-container transition-all"
+              {/* Upload dropzone */}
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <label
+                  htmlFor="csv-upload"
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-xl py-10 px-6 cursor-pointer transition-all ${
+                    file ? "border-primary bg-primary/5" : "border-outline-variant hover:border-primary hover:bg-surface-container-low"
+                  }`}
                 >
-                  {loading ? "Analyzing..." : "Upload & Analyze"}
-                </button>
-                {error && <span className="text-error font-medium">{error}</span>}
+                  <span className="material-symbols-outlined text-4xl text-primary">
+                    {file ? "task" : "cloud_upload"}
+                  </span>
+                  {file ? (
+                    <div className="text-center">
+                      <p className="font-bold text-on-surface">{file.name}</p>
+                      <p className="text-xs text-on-surface-variant mt-1">{(file.size / 1024).toFixed(1)} KB — click to change file</p>
+                    </div>
+                  ) : (
+                    <div className="text-center">
+                      <p className="font-bold text-on-surface">Click to upload a CSV file</p>
+                      <p className="text-xs text-on-surface-variant mt-1">or drag and drop it here</p>
+                    </div>
+                  )}
+                  <input
+                    id="csv-upload"
+                    type="file"
+                    accept=".csv"
+                    onChange={(e) => setFile(e.target.files[0])}
+                    className="hidden"
+                  />
+                </label>
+
+                <div className="flex items-center justify-between mt-4">
+                  <button
+                    onClick={handleUpload}
+                    disabled={!file || loading}
+                    className="bg-primary text-on-primary px-6 py-3 rounded-lg font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary-container transition-all flex items-center gap-2"
+                  >
+                    {loading ? (
+                      <>
+                        <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined text-sm">bolt</span>
+                        Upload & Analyze
+                      </>
+                    )}
+                  </button>
+                  {error && (
+                    <span className="text-error font-medium flex items-center gap-1">
+                      <span className="material-symbols-outlined text-sm">error</span>
+                      {error}
+                    </span>
+                  )}
+                </div>
               </div>
 
               {loading && (
