@@ -7,7 +7,7 @@ import { useAuth } from "./AuthContext";
 import Auth from "./Auth";
 import History from "./History";
 import ColumnDetails from "./ColumnDetails";
-import Chat from "./Chat";
+import FloatingChat from "./FloatingChat";
 
 function calculateHealthScore(result) {
   if (!result?.eda) return 100;
@@ -604,12 +604,6 @@ function App() {
                         </button>
                         {story && <p className="mt-4 text-sm text-on-surface-variant leading-relaxed">{story}</p>}
                       </div>
-
-                      {result.analysisId && (
-                        <div className="bg-white rounded-xl shadow-md p-6">
-                          <Chat analysisId={result.analysisId} />
-                        </div>
-                      )}
                     </div>
 
                     {/* Right column */}
@@ -748,6 +742,8 @@ function App() {
             </>
           )}
         </div>
+
+        {result?.analysisId && <FloatingChat analysisId={result.analysisId} />}
       </main>
     </div>
   );
