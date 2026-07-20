@@ -207,15 +207,18 @@ function ColumnDetails({ result, token }) {
             )}
 
             <div className="space-y-3 mb-6">
-              {(result.suggestions || []).slice(0, 2).map((s, i) => (
-                <button
-                  key={i}
-                  onClick={() => setQuestion(s)}
-                  className="w-full text-left p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/5 transition-colors"
-                >
-                  <p className="text-xs text-white/80">{s}</p>
-                </button>
-              ))}
+              {(result.suggestions || []).slice(0, 2).map((s, i) => {
+                const suggestionText = typeof s === "object" && s !== null ? s.suggested_fix : s;
+                return (
+                  <button
+                    key={i}
+                    onClick={() => setQuestion(suggestionText)}
+                    className="w-full text-left p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/5 transition-colors"
+                  >
+                    <p className="text-xs text-white/80">{suggestionText}</p>
+                  </button>
+                );
+              })}
             </div>
 
             <div className="relative">
